@@ -20,11 +20,11 @@ sudo apt-get install -y \
     make \
     tree \
     htop \
-    vim
+    nano
 
 # Set up PowerShell repository for on-demand module installation
 echo "🔧 Configuring PowerShell repository..."
-pwsh -c "Set-PSRepository PSGallery -InstallationPolicy Trusted"
+pwsh -c 'Set-PSRepository PSGallery -InstallationPolicy Trusted'
 
 # Set up git configuration (if not already set)
 echo "🔧 Configuring git..."

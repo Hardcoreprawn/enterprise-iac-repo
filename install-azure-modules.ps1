@@ -21,7 +21,7 @@ Write-Host ""
 # Function to check if module is installed
 function Test-ModuleInstalled {
     param([string]$ModuleName)
-    return $null -ne (Get-Module -ListAvailable $ModuleName)
+    return ($null -ne (Get-Module -ListAvailable $ModuleName))
 }
 
 # Install all Az modules if requested
