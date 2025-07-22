@@ -12,7 +12,7 @@ DevContainer-based infrastructure automation toolkit for enterprise cloud deploy
 
 ## 🚀 Quick Start
 
-**New to this project?** See the [Quick Start Guide](QUICK-START.md) for a 5-minute setup.
+**New to this project?** See the [Quick Start Guide](docs/quick-start.md) for a 5-minute setup.
 
 ## DevContainer Setup (Required)
 
@@ -125,8 +125,8 @@ All other tools (PowerShell, Azure CLI, Terraform, Make) are pre-installed in th
 
 ## Documentation
 
-- **[Quick Start Guide](QUICK-START.md)** - Get up and running in 5 minutes
-- **[Project Overview](PROJECT-OVERVIEW.md)** - Comprehensive project structure and goals
+- **[Quick Start Guide](docs/quick-start.md)** - Get up and running in 5 minutes
+- **[Project Overview](docs/project-overview.md)** - Comprehensive project structure and goals
 - **[Architecture Overview](docs/ARCHITECTURE.md)** - High-level design and technology decisions
 - **[Cloud Infrastructure Definition of Done](docs/standards/cloud-infrastructure-definition-of-done.md)** - Enterprise standards checklist
 - **[Writing Principles](docs/standards/writing-principles.md)** - Guidelines for clear, actionable documentation

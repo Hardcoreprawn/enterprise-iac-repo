@@ -1,7 +1,7 @@
 # Makefile for DevContainer infrastructure operations
 # Optimized for consistent Linux container environment
 
-.PHONY: help validate test plan apply destroy clean install-hooks install-az
+.PHONY: help validate test test-setup plan apply destroy clean install-hooks install-az
 
 # Default target
 help:
@@ -9,6 +9,7 @@ help:
 	@echo "=============================================="
 	@echo ""
 	@echo "Local Development:"
+	@echo "  test-setup    - Test that toolkit setup is working correctly"
 	@echo "  validate      - Run all validation tests locally"
 	@echo "  validate-dry  - Run validation in dry-run mode (fast)"
 	@echo "  test          - Run connectivity and compliance tests"
@@ -27,10 +28,10 @@ help:
 
 # Validation commands (DevContainer uses pwsh)
 validate:
-	@pwsh -ExecutionPolicy Bypass -File "./validate-local.ps1"
+	@pwsh -ExecutionPolicy Bypass -File "./scripts/validate-local.ps1"
 
 validate-dry:
-	@pwsh -ExecutionPolicy Bypass -File "./validate-local.ps1" -DryRun
+	@pwsh -ExecutionPolicy Bypass -File "./scripts/validate-local.ps1" -DryRun
 
 # Test commands
 test: test-connectivity test-security test-monitoring
@@ -70,7 +71,11 @@ install-hooks:
 
 # Azure PowerShell module installation
 install-az:
-	@pwsh -ExecutionPolicy Bypass -File "./install-azure-modules.ps1"
+	@pwsh -ExecutionPolicy Bypass -File "./scripts/install-azure-modules.ps1"
+
+# Testing and validation
+test-setup:
+	@pwsh -ExecutionPolicy Bypass -File "./scripts/test-setup.ps1"
 
 # Cleanup
 clean:

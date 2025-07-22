@@ -5,8 +5,8 @@ How to contribute to the Enterprise Infrastructure as Code Toolkit
 ## Before You Start
 
 1. **Read the fundamentals**:
-   - [Quick Start Guide](QUICK-START.md) - Get your environment working
-   - [Project Overview](PROJECT-OVERVIEW.md) - Understand the project structure
+   - [Quick Start Guide](docs/quick-start.md) - Get your environment working
+   - [Project Overview](docs/project-overview.md) - Understand the project structure
    - [Writing Principles](docs/standards/writing-principles.md) - How we write documentation
 
 2. **Set up your environment**:
@@ -178,13 +178,13 @@ Reviewers check for:
 
 ### Resources
 
-- **Project Documentation** - Start with [PROJECT-OVERVIEW.md](PROJECT-OVERVIEW.md)
+- **Project Documentation** - Start with [docs/project-overview.md](docs/project-overview.md)
 - **Enterprise Standards** - Review [Definition of Done](docs/standards/cloud-infrastructure-definition-of-done.md)
 - **Validation Framework** - See [tests/README.md](tests/README.md)
 
 ### Troubleshooting
 
-- **Environment Issues** - See [QUICK-START.md](QUICK-START.md) troubleshooting section
+- **Environment Issues** - See [docs/quick-start.md](docs/quick-start.md) troubleshooting section
 - **Validation Failures** - Run `make validate-dry` for detailed output
 - **DevContainer Problems** - Run `./health-check.sh` to diagnose
 

@@ -73,22 +73,22 @@ $infraFiles | ForEach-Object { Write-Host "  $_" -ForegroundColor White }
 # Run validation
 Write-Host "`nRunning infrastructure validation..." -ForegroundColor Yellow
 
-if (Test-Path "validate-local.ps1") {
+if (Test-Path "scripts/validate-local.ps1") {
     # Quick validation for pre-commit
-    & "./validate-local.ps1" -DryRun
+    & "./scripts/validate-local.ps1" -DryRun
     
     if ($LASTEXITCODE -eq 0) {
         Write-Host "`n✓ Pre-commit validation passed" -ForegroundColor Green
         Write-Host "Recommendation: Run full validation before pushing" -ForegroundColor Cyan
-        Write-Host "Command: ./validate-local.ps1" -ForegroundColor White
+        Write-Host "Command: ./scripts/validate-local.ps1" -ForegroundColor White
     } else {
         Write-Host "`n✗ Pre-commit validation failed" -ForegroundColor Red
-        Write-Host "Run './validate-local.ps1' for detailed results" -ForegroundColor Yellow
+        Write-Host "Run './scripts/validate-local.ps1' for detailed results" -ForegroundColor Yellow
         Write-Host "Use 'git commit --no-verify' to bypass this check" -ForegroundColor Yellow
         exit 1
     }
 } else {
-    Write-Host "Warning: validate-local.ps1 not found - skipping validation" -ForegroundColor Yellow
+    Write-Host "Warning: scripts/validate-local.ps1 not found - skipping validation" -ForegroundColor Yellow
 }
 
 exit 0

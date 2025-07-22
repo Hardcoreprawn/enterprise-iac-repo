@@ -12,8 +12,8 @@ NC='\033[0m' # No Color
 echo -e "${GREEN}Running pre-commit infrastructure validation...${NC}"
 
 # Check if we're in a repository with infrastructure
-if [ ! -f "validate-local.ps1" ]; then
-    echo -e "${YELLOW}Warning: No validate-local.ps1 found - skipping infrastructure validation${NC}"
+if [ ! -f "scripts/validate-local.ps1" ]; then
+    echo -e "${YELLOW}Warning: No scripts/validate-local.ps1 found - skipping infrastructure validation${NC}"
     exit 0
 fi
 
@@ -29,7 +29,7 @@ fi
 
 # Run validation in dry-run mode for speed
 echo "Running infrastructure validation (dry-run mode)..."
-$POWERSHELL_CMD -ExecutionPolicy Bypass -File "./validate-local.ps1" -DryRun
+$POWERSHELL_CMD -ExecutionPolicy Bypass -File "./scripts/validate-local.ps1" -DryRun
 
 # Check exit code
 if [ $? -eq 0 ]; then
@@ -37,7 +37,7 @@ if [ $? -eq 0 ]; then
     exit 0
 else
     echo -e "${RED}✗ Infrastructure validation failed${NC}"
-    echo -e "${YELLOW}Run './validate-local.ps1' for detailed results${NC}"
+    echo -e "${YELLOW}Run './scripts/validate-local.ps1' for detailed results${NC}"
     echo -e "${YELLOW}Use 'git commit --no-verify' to bypass this check${NC}"
     exit 1
 fi
