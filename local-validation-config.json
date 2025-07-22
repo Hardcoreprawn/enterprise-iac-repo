@@ -1,0 +1,31 @@
+{
+  "description": "Local validation configuration for infrastructure testing",
+  "resourceGroup": null,
+  "subscription": null,
+  "runConnectivityTests": true,
+  "runSecurityTests": false,
+  "runMonitoringTests": false,
+  "localMode": {
+    "skipAzureAuth": false,
+    "dryRunByDefault": false,
+    "validateTerraformOnly": false
+  },
+  "notifications": {
+    "showSummaryOnly": false,
+    "saveDetailedReports": true,
+    "exitOnFirstFailure": false
+  },
+  "customRules": {
+    "allowedTerraformProviders": [
+      "azurerm",
+      "azuread",
+      "random",
+      "time"
+    ],
+    "requiredTags": [
+      "Environment",
+      "Project",
+      "Owner"
+    ]
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "description": "Network connectivity test configuration",
+  "version": "1.0",
+  "lastUpdated": "2025-07-22",
+  "connectivityTests": [
+    {
+      "name": "Web Server to Database",
+      "testType": "port",
+      "source": "web-tier",
+      "destination": "db-server.internal",
+      "port": 5432,
+      "protocol": "TCP",
+      "expected": true,
+      "description": "Web application should connect to PostgreSQL database"
+    },
+    {
+      "name": "Load Balancer Health Check",
+      "testType": "http",
+      "source": "load-balancer",
+      "destination": "web-server.internal",
+      "port": 80,
+      "protocol": "HTTP",
+      "expected": true,
+      "description": "Load balancer should reach web server health endpoint"
+    },
+    {
+      "name": "External Access Blocked",
+      "testType": "port",
+      "source": "external",
+      "destination": "db-server.internal",
+      "port": 5432,
+      "protocol": "TCP",
+      "expected": false,
+      "description": "Database should not be accessible from external networks"
+    },
+    {
+      "name": "DNS Resolution",
+      "testType": "dns",
+      "source": "any",
+      "destination": "api.example.com",
+      "port": null,
+      "protocol": "DNS",
+      "expected": true,
+      "description": "Internal services should resolve external API DNS"
+    },
+    {
+      "name": "Management Access",
+      "testType": "port",
+      "source": "management-subnet",
+      "destination": "admin-server.internal",
+      "port": 22,
+      "protocol": "TCP",
+      "expected": true,
+      "description": "Management subnet should have SSH access to admin servers"
+    },
+    {
+      "name": "Unauthorized SSH Blocked",
+      "testType": "port",
+      "source": "web-tier",
+      "destination": "admin-server.internal",
+      "port": 22,
+      "protocol": "TCP",
+      "expected": false,
+      "description": "Web tier should not have SSH access to admin servers"
+    }
+  ],
+  "monitoring": {
+    "enabled": true,
+    "logAnalyticsWorkspace": "cloudstd-logs",
+    "alertOnFailure": true,
+    "retentionDays": 90
+  },
+  "schedule": {
+    "criticalTests": "0 */1 * * *",
+    "fullSuite": "0 2 * * *",
+    "description": "Critical tests every hour, full suite daily at 2 AM"
+  },
+  "notifications": {
+    "onFailure": {
+      "enabled": true,
+      "channels": ["email", "teams"],
+      "escalation": {
+        "immediate": ["ops-team@company.com"],
+        "after15min": ["platform-team@company.com"],
+        "after1hour": ["engineering-leads@company.com"]
+      }
+    }
+  }
+}

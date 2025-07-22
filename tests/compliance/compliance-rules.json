@@ -1,0 +1,59 @@
+{
+  "requiredPortRules": [
+    {
+      "port": "443",
+      "expectedAccess": "Allow",
+      "severity": "High",
+      "description": "HTTPS traffic must be allowed"
+    },
+    {
+      "port": "22",
+      "expectedAccess": "Allow",
+      "severity": "Medium",
+      "description": "SSH access for management (restrict source IPs)"
+    },
+    {
+      "port": "3389",
+      "expectedAccess": "Deny",
+      "severity": "High",
+      "description": "RDP should be blocked from internet"
+    },
+    {
+      "port": "80",
+      "expectedAccess": "Deny",
+      "severity": "Medium",
+      "description": "HTTP should redirect to HTTPS"
+    }
+  ],
+  "storageAccountRules": {
+    "requireHttpsOnly": true,
+    "requireEncryption": true,
+    "allowPublicAccess": false,
+    "requirePrivateEndpoints": true
+  },
+  "keyVaultRules": {
+    "requireSoftDelete": true,
+    "requirePurgeProtection": true,
+    "requireRbacAccess": true,
+    "allowPublicNetworkAccess": false
+  },
+  "networkSecurityRules": {
+    "requireDefaultDeny": true,
+    "maxPermissiveRules": 0,
+    "requireLogging": true
+  },
+  "monitoringRules": {
+    "requireDiagnosticSettings": true,
+    "requiredLogCategories": [
+      "AuditEvent",
+      "SecurityEvent",
+      "NetworkSecurityGroupEvent"
+    ],
+    "requireAlerts": true
+  },
+  "complianceThresholds": {
+    "maxCriticalFailures": 0,
+    "maxHighFailures": 2,
+    "maxMediumFailures": 5
+  }
+}

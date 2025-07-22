@@ -1,0 +1,106 @@
+{
+  "logAnalytics": {
+    "minimumRetentionDays": 90,
+    "requiredDataSources": [
+      "AzureActivity",
+      "SecurityEvent",
+      "WindowsEvent",
+      "Syslog",
+      "Perf"
+    ],
+    "requiredSolutions": [
+      "Security",
+      "Updates",
+      "ChangeTracking"
+    ]
+  },
+  "applicationInsights": {
+    "minimumRetentionDays": 90,
+    "minimumSamplingPercentage": 100,
+    "requiredTelemetryTypes": [
+      "requests",
+      "dependencies",
+      "exceptions",
+      "traces"
+    ]
+  },
+  "alertRules": {
+    "requiredAlerts": [
+      {
+        "name": "High CPU Usage",
+        "description": "CPU usage above 80%",
+        "severity": "High",
+        "maxEvaluationFrequency": "PT5M",
+        "metricName": "Percentage CPU",
+        "threshold": 80
+      },
+      {
+        "name": "High Memory Usage", 
+        "description": "Memory usage above 85%",
+        "severity": "High",
+        "maxEvaluationFrequency": "PT5M",
+        "metricName": "Available Memory Bytes",
+        "threshold": 15
+      },
+      {
+        "name": "Disk Space Low",
+        "description": "Disk space below 20%",
+        "severity": "Critical",
+        "maxEvaluationFrequency": "PT15M",
+        "metricName": "% Free Space",
+        "threshold": 20
+      },
+      {
+        "name": "Application Errors",
+        "description": "Application error rate above 5%",
+        "severity": "High",
+        "maxEvaluationFrequency": "PT5M",
+        "metricName": "Failed requests",
+        "threshold": 5
+      },
+      {
+        "name": "Service Unavailable",
+        "description": "Service availability below 99%",
+        "severity": "Critical",
+        "maxEvaluationFrequency": "PT1M",
+        "metricName": "Availability",
+        "threshold": 99
+      }
+    ]
+  },
+  "diagnosticSettings": {
+    "requiredLogCategories": [
+      "AuditEvent",
+      "SecurityEvent",
+      "Administrative",
+      "ServiceHealth",
+      "Alert"
+    ],
+    "requiredMetrics": [
+      "AllMetrics"
+    ],
+    "retentionDays": 90,
+    "exportToLogAnalytics": true,
+    "exportToStorageAccount": false
+  },
+  "actionGroups": {
+    "requiredNotificationTypes": [
+      "email",
+      "sms"
+    ],
+    "escalationTimeouts": {
+      "critical": "PT5M",
+      "high": "PT15M",
+      "medium": "PT1H"
+    }
+  },
+  "monitoring": {
+    "minimumAvailability": 99.9,
+    "maxResponseTime": 2000,
+    "alertThresholds": {
+      "errorRate": 1.0,
+      "responseTime": 5000,
+      "availability": 99.0
+    }
+  }
+}

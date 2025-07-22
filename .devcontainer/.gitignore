@@ -1,0 +1,8 @@
+# Add DevContainer to gitignore entries for container-specific files
+
+# DevContainer volumes and cache
+.devcontainer/.tmp/
+.devcontainer/mounts/
+
+# Container build cache
+.devcontainer/docker-compose.override.yml

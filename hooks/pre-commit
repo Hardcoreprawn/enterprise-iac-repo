@@ -1,0 +1,43 @@
+# Git pre-commit hook for infrastructure validation
+# Copy this to .git/hooks/pre-commit and make executable
+
+#!/bin/bash
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+echo -e "${GREEN}Running pre-commit infrastructure validation...${NC}"
+
+# Check if we're in a repository with infrastructure
+if [ ! -f "validate-local.ps1" ]; then
+    echo -e "${YELLOW}Warning: No validate-local.ps1 found - skipping infrastructure validation${NC}"
+    exit 0
+fi
+
+# Check if PowerShell is available
+if command -v pwsh &> /dev/null; then
+    POWERSHELL_CMD="pwsh"
+elif command -v powershell &> /dev/null; then
+    POWERSHELL_CMD="powershell"
+else
+    echo -e "${YELLOW}Warning: PowerShell not found - skipping infrastructure validation${NC}"
+    exit 0
+fi
+
+# Run validation in dry-run mode for speed
+echo "Running infrastructure validation (dry-run mode)..."
+$POWERSHELL_CMD -ExecutionPolicy Bypass -File "./validate-local.ps1" -DryRun
+
+# Check exit code
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✓ Infrastructure validation passed${NC}"
+    exit 0
+else
+    echo -e "${RED}✗ Infrastructure validation failed${NC}"
+    echo -e "${YELLOW}Run './validate-local.ps1' for detailed results${NC}"
+    echo -e "${YELLOW}Use 'git commit --no-verify' to bypass this check${NC}"
+    exit 1
+fi

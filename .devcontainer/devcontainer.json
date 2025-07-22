@@ -1,0 +1,69 @@
+{
+  "name": "Infrastructure Toolkit",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/azure-cli:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/terraform:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/powershell:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true,
+      "username": "vscode",
+      "uid": "1000",
+      "gid": "1000"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.powershell",
+        "hashicorp.terraform",
+        "ms-vscode.azure-cli-tools",
+        "ms-azuretools.vscode-azureresourcegroups",
+        "ms-azuretools.vscode-azurestorage",
+        "redhat.vscode-yaml",
+        "davidanson.vscode-markdownlint",
+        "ms-vscode.makefile-tools"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "pwsh",
+        "powershell.powerShellDefaultVersion": "PowerShell (x64)",
+        "terraform.experimentalFeatures.validateOnSave": true,
+        "files.associations": {
+          "*.tf": "terraform",
+          "*.tfvars": "terraform"
+        }
+      }
+    }
+  },
+
+  "containerEnv": {
+    "TZ": "UTC"
+  },
+
+  "remoteUser": "vscode",
+  
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  
+  "forwardPorts": [8080, 3000],
+  
+  "mounts": [
+    "source=${localEnv:HOME}/.azure,target=/home/vscode/.azure,type=bind,consistency=cached"
+  ],
+
+  "workspaceFolder": "/workspaces/enterprise-iac-repo",
+  
+  "shutdownAction": "stopContainer"
+}
