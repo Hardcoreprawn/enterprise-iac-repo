@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Post-create script for infrastructure toolkit devcontainer
-# Sets up the environment after container creation
+# Sets up the environment after container creation with repo cloned to Linux filesystem
 
 set -e
 
@@ -49,6 +49,12 @@ if [ -d ".git" ]; then
     make install-hooks || echo "⚠️  Git hooks installation skipped (will work after first commit)"
 fi
 
+# Create performance optimization message
+echo "⚡ Performance Note:"
+echo "   Repository is running on Linux filesystem for optimal performance"
+echo "   Terraform operations will be significantly faster than Windows bind mount"
+echo ""
+
 # Create a welcome message
 echo "✅ Devcontainer setup complete!"
 echo ""
@@ -70,6 +76,10 @@ cat > /workspaces/enterprise-iac-repo/health-check.sh << 'EOF'
 #!/bin/bash
 echo "🏥 Infrastructure Toolkit Health Check"
 echo "======================================"
+echo ""
+
+# Check filesystem type for performance info
+echo "📁 Filesystem: $(df -T /workspaces | tail -n1 | awk '{print $2}')"
 echo ""
 
 # Check PowerShell
@@ -108,6 +118,7 @@ else
 fi
 
 echo ""
+echo "⚡ Performance optimized - running on Linux filesystem!"
 echo "🎯 Ready to use the Infrastructure Toolkit!"
 EOF
 

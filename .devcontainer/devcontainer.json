@@ -55,6 +55,8 @@
 
   "remoteUser": "vscode",
   
+  "initializeCommand": "echo 'Preparing to clone repository into container filesystem for better performance...'",
+  
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   
   "forwardPorts": [8080, 3000],

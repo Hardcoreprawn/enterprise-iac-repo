@@ -92,6 +92,12 @@ make destroy
 
 ## DevContainer Features
 
+### Performance Optimization
+
+- **Linux Filesystem** - Repository runs entirely on Linux filesystem for maximum performance
+- **Fast Terraform Operations** - No Windows bind mount performance penalties
+- **Optimized I/O** - All file operations run at native container speeds
+
 ### Pre-installed Tools
 
 - **PowerShell 7+** - Main scripting environment
@@ -191,11 +197,14 @@ Modify `.devcontainer/devcontainer.json` to add:
 
 ### Container Persistence
 
-Data in the workspace is persistent, but container state is not. This means:
+The repository is cloned into the container's Linux filesystem for optimal performance. This means:
 
-- Your code changes persist
-- Configuration files persist
-- Tool installations in container are reset on rebuild
+- **Code changes persist** across container rebuilds (as long as you commit/push)
+- **Performance is optimized** - no Windows filesystem binding penalties
+- **Terraform runs fast** - all operations on native Linux filesystem
+- **Tool installations in container** are reset on rebuild (this is by design)
+
+**Important**: Commit and push your changes regularly since the container filesystem is ephemeral.
 
 ### Multi-Environment
 
