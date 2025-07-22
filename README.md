@@ -1,17 +1,22 @@
 # Enterprise Infrastructure as Code Toolkit
 
-Portable infrastructure automation toolkit for enterprise cloud deployments. Designed to work locally before commits and be portable across organizations and roles.
+DevContainer-based infrastructure automation toolkit for enterprise cloud deployments. Provides a consistent development environment with all tools pre-configured.
 
-## Quick Start
+**Key Features:**
 
-1. **Configure your environment**: Edit `local-validation-config.json`
-2. **Run validation**: `make validate` or `./validate-local.ps1`
-3. **Install git hooks**: `make install-hooks`
-4. **Start building**: Use the `terraform/` modules and testing framework
+- 🚀 **Fast Setup**: DevContainer with all tools pre-configured
+- 🔒 **Enterprise Standards**: Built-in security and compliance validation
+- 🧪 **Local-First**: Test everything before deploying
+- 📦 **Consistent Environment**: Same toolchain for everyone
+- 🎯 **Clear Standards**: Binary completion criteria for all infrastructure
 
-## DevContainer Setup (Recommended)
+## 🚀 Quick Start
 
-For isolated, reproducible development:
+**New to this project?** See the [Quick Start Guide](QUICK-START.md) for a 5-minute setup.
+
+## DevContainer Setup (Required)
+
+This toolkit requires a DevContainer for consistent development:
 
 1. **Install Prerequisites**:
    - VS Code with "Dev Containers" extension
@@ -20,7 +25,7 @@ For isolated, reproducible development:
 2. **Open in Container**:
    - Open this repository in VS Code
    - Click "Reopen in Container" when prompted
-   - Wait for automatic setup to complete
+   - Wait 2-3 minutes for automatic setup to complete
 
 3. **Start Developing**:
 
@@ -34,9 +39,9 @@ For isolated, reproducible development:
 
 See [DevContainer Guide](.devcontainer/README.md) for detailed instructions.
 
-## Local-First Workflow
+## DevContainer-First Workflow
 
-This toolkit is designed for local validation before commits:
+This toolkit is designed for consistent DevContainer development:
 
 ```bash
 # Quick validation (fast, for development)
@@ -57,10 +62,10 @@ make apply
 
 ## Portability Features
 
-- **No vendor lock-in**: Scripts work with Azure CLI, PowerShell, or Terraform
-- **Cross-platform**: Works on Windows, Linux, and macOS
-- **Self-contained**: All dependencies documented and checkable
-- **Role-portable**: Take this toolkit to any organization
+- **Container-based**: Consistent environment across all machines
+- **No local dependencies**: Everything runs inside the container
+- **Self-contained**: All dependencies documented and pre-installed
+- **Organization-portable**: Take this toolkit anywhere
 
 ## Repository Structure
 
@@ -93,16 +98,17 @@ The toolkit uses `local-validation-config.json` for environment-specific setting
 
 ## Prerequisites
 
-- PowerShell (pwsh) or Windows PowerShell
-- Azure CLI or Azure PowerShell modules
-- Terraform >= 1.0 (optional)
-- Make (optional, for convenience commands)
+- VS Code with "Dev Containers" extension
+- Docker Desktop
+- Git (for cloning the repository)
 
-## Local Development
+All other tools (PowerShell, Azure CLI, Terraform, Make) are pre-installed in the DevContainer.
+
+## Development Workflow
 
 1. **Configure environment**: Edit `local-validation-config.json`
 
-2. **Run validation locally**:
+2. **Run validation in DevContainer**:
 
    ```bash
    # Quick validation (dry-run, fast)
@@ -110,19 +116,22 @@ The toolkit uses `local-validation-config.json` for environment-specific setting
    
    # Full validation (includes Azure checks)
    make validate
+   
+   # Install Azure modules when needed
+   make install-az
    ```
 
-3. **Install git hooks** (optional):
-
-   ```bash
-   make install-hooks
-   ```
+3. **Git hooks automatically validate** when you commit
 
 ## Documentation
 
+- **[Quick Start Guide](QUICK-START.md)** - Get up and running in 5 minutes
+- **[Project Overview](PROJECT-OVERVIEW.md)** - Comprehensive project structure and goals
+- **[Architecture Overview](docs/ARCHITECTURE.md)** - High-level design and technology decisions
 - **[Cloud Infrastructure Definition of Done](docs/standards/cloud-infrastructure-definition-of-done.md)** - Enterprise standards checklist
 - **[Writing Principles](docs/standards/writing-principles.md)** - Guidelines for clear, actionable documentation
 - **[Testing Framework](tests/README.md)** - Infrastructure validation and monitoring scripts
+- **[DevContainer Guide](.devcontainer/README.md)** - Detailed container development setup
 
 ## Portable Workflow
 
@@ -143,6 +152,8 @@ All infrastructure deployments must meet the enterprise standards defined in our
 ## Contributing
 
 Follow the established [writing principles](docs/standards/writing-principles.md) when creating documentation or standards. Focus on concrete, actionable requirements rather than aspirational language.
+
+See the [Contributing Guide](CONTRIBUTING.md) for detailed information on development workflow, testing requirements, and code standards.
 
 ---
 

@@ -1,35 +1,60 @@
 # DevContainer Development Guide
 
-Guide for using the Infrastructure Toolkit in a development container.
+Complete guide for using the Infrastructure Toolkit in a development container for consistent, portable development environments.
+
+## Why DevContainer?
+
+- **Consistent Environment**: Everyone gets the same tools and versions
+- **Fast Setup**: No manual tool installation
+- **Performance**: Linux filesystem for faster Terraform operations
+- **Isolation**: No conflicts with local machine setup
+- **Portable**: Works on Windows, macOS, and Linux
 
 ## Getting Started
 
-1. **Open in DevContainer**
-   - Install the "Dev Containers" extension in VS Code
-   - Open the repository in VS Code
-   - Click "Reopen in Container" when prompted, or use Command Palette: "Dev Containers: Reopen in Container"
+### Prerequisites
 
-2. **First Run Setup**
+- **VS Code** with "Dev Containers" extension
+- **Docker Desktop** (or Docker Engine on Linux)
+- **Git** for cloning the repository
+
+### First Time Setup
+
+1. **Clone Repository**
 
    ```bash
-   # Check everything is working
-   ./health-check.sh
-   
-   # Run quick validation test
-   make validate-dry
+   git clone https://github.com/Hardcoreprawn/enterprise-iac-repo.git
+   cd enterprise-iac-repo
    ```
 
-3. **Azure Authentication**
+2. **Open in VS Code**
 
    ```bash
-   # Sign in to Azure
-   az login
+   code .
+   ```
+
+3. **Reopen in Container**
+   - VS Code will detect the devcontainer configuration
+   - Click "Reopen in Container" when prompted
+   - Alternative: `Ctrl+Shift+P` → "Dev Containers: Reopen in Container"
+
+4. **Wait for Setup**
+   - Initial setup takes 2-3 minutes (much faster now!)
+   - Container will install Azure CLI, Terraform, PowerShell, and extensions
+   - Azure PowerShell modules install on-demand when needed
+   - Progress shown in VS Code terminal
+
+5. **Verify Installation**
+
+   ```bash
+   # Run health check
+   ./health-check.sh
    
-   # List available subscriptions
-   az account list --output table
+   # Install Azure PowerShell modules when needed
+   make install-az
    
-   # Set default subscription
-   az account set --subscription "your-subscription-id"
+   # Quick validation test
+   make validate-dry
    ```
 
 ## Development Workflow

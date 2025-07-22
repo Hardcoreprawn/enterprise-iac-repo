@@ -1,7 +1,7 @@
 # Setup Script for Infrastructure Toolkit
 
-# Initializes the toolkit for local development across different environments
-# Designed to be portable across organizations and operating systems
+# Initializes the toolkit for DevContainer development
+# Simplified for consistent Linux container environment
 
 param(
     [Parameter(Mandatory=$false)]
@@ -18,92 +18,69 @@ Write-Host "Infrastructure Toolkit Setup" -ForegroundColor Green
 Write-Host "============================" -ForegroundColor Green
 Write-Host ""
 
+# Check if we're in DevContainer
+$isDevContainer = $env:REMOTE_CONTAINERS -eq "true" -or (Test-Path "/.dockerenv")
+
+if (-not $isDevContainer) {
+    Write-Host "⚠️  Warning: This setup script is optimized for DevContainer environments." -ForegroundColor Yellow
+    Write-Host "   For local development, please use the DevContainer setup instead." -ForegroundColor Yellow
+    Write-Host "   See the Quick Start Guide for instructions." -ForegroundColor White
+    Write-Host ""
+}
+
 $setupResults = @()
 
-# Check prerequisites
-Write-Host "Checking prerequisites..." -ForegroundColor Yellow
+# Quick tool verification (DevContainer should have everything)
+Write-Host "Verifying DevContainer tools..." -ForegroundColor Yellow
 
-$prereqChecks = @(
-    @{
-        Name = "PowerShell"
-        Check = { $PSVersionTable.PSVersion.Major -ge 5 }
-        Required = $true
-        InstallMsg = "Install PowerShell 7+ from https://github.com/PowerShell/PowerShell"
-    },
-    @{
-        Name = "Git"
-        Check = { Get-Command "git" -ErrorAction SilentlyContinue }
-        Required = $true
-        InstallMsg = "Install Git from https://git-scm.com/"
-    },
-    @{
-        Name = "Azure CLI"
-        Check = { Get-Command "az" -ErrorAction SilentlyContinue }
-        Required = $false
-        InstallMsg = "Install Azure CLI from https://docs.microsoft.com/en-us/cli/azure/install-azure-cli"
-    },
-    @{
-        Name = "Azure PowerShell"
-        Check = { Get-Module -ListAvailable Az.* }
-        Required = $false
-        InstallMsg = "Install Azure PowerShell: Install-Module -Name Az -Scope CurrentUser"
-    },
-    @{
-        Name = "Terraform"
-        Check = { Get-Command "terraform" -ErrorAction SilentlyContinue }
-        Required = $false
-        InstallMsg = "Install Terraform from https://terraform.io/downloads"
-    },
-    @{
-        Name = "Make"
-        Check = { Get-Command "make" -ErrorAction SilentlyContinue }
-        Required = $false
-        InstallMsg = "Install Make (Windows: chocolatey install make, Linux/Mac: usually pre-installed)"
-    }
+$tools = @(
+    @{ Name = "PowerShell"; Command = "pwsh"; Required = $true },
+    @{ Name = "Git"; Command = "git"; Required = $true },
+    @{ Name = "Azure CLI"; Command = "az"; Required = $false },
+    @{ Name = "Terraform"; Command = "terraform"; Required = $false },
+    @{ Name = "Make"; Command = "make"; Required = $false }
 )
 
-$missingRequired = @()
-$missingOptional = @()
+$missingTools = @()
 
-foreach ($check in $prereqChecks) {
-    $result = & $check.Check
-    if ($result) {
-        Write-Host "  ✓ $($check.Name)" -ForegroundColor Green
-        $setupResults += @{ Component = $check.Name; Status = "Available" }
+foreach ($tool in $tools) {
+    if (Get-Command $tool.Command -ErrorAction SilentlyContinue) {
+        Write-Host "  ✓ $($tool.Name)" -ForegroundColor Green
+        $setupResults += @{ Component = $tool.Name; Status = "Available" }
     } else {
-        $color = if ($check.Required) { "Red" } else { "Yellow" }
-        $symbol = if ($check.Required) { "✗" } else { "⚠" }
-        Write-Host "  $symbol $($check.Name)" -ForegroundColor $color
+        $color = if ($tool.Required) { "Red" } else { "Yellow" }
+        $symbol = if ($tool.Required) { "✗" } else { "⚠" }
+        Write-Host "  $symbol $($tool.Name)" -ForegroundColor $color
         
-        if ($check.Required) {
-            $missingRequired += $check
-        } else {
-            $missingOptional += $check
+        if ($tool.Required) {
+            $missingTools += $tool.Name
         }
         
-        $setupResults += @{ Component = $check.Name; Status = "Missing"; InstallMsg = $check.InstallMsg }
+        $setupResults += @{ Component = $tool.Name; Status = "Missing" }
     }
 }
 
-if ($missingRequired.Count -gt 0) {
-    Write-Host "`nMissing required prerequisites:" -ForegroundColor Red
-    foreach ($missing in $missingRequired) {
-        Write-Host "  - $($missing.Name): $($missing.InstallMsg)" -ForegroundColor White
+# Check Azure PowerShell repository configuration
+Write-Host "  Checking Azure PowerShell configuration..." -ForegroundColor Cyan
+try {
+    $psGallery = Get-PSRepository PSGallery -ErrorAction SilentlyContinue
+    if ($psGallery -and $psGallery.InstallationPolicy -eq 'Trusted') {
+        Write-Host "  ✓ Azure PowerShell (on-demand installation ready)" -ForegroundColor Green
+        $setupResults += @{ Component = "Azure PowerShell"; Status = "Ready" }
+    } else {
+        Write-Host "  ⚠ Azure PowerShell repository not configured" -ForegroundColor Yellow
+        $setupResults += @{ Component = "Azure PowerShell"; Status = "Config Needed" }
     }
-    
-    if (-not $Force) {
-        Write-Host "`nSetup cannot continue without required prerequisites." -ForegroundColor Red
-        Write-Host "Install missing prerequisites or use -Force to continue anyway." -ForegroundColor Yellow
-        exit 1
-    }
+} catch {
+    Write-Host "  ✗ PowerShell Gallery access failed" -ForegroundColor Red
+    $setupResults += @{ Component = "Azure PowerShell"; Status = "Failed" }
 }
 
-if ($missingOptional.Count -gt 0 -and -not $Minimal) {
-    Write-Host "`nOptional prerequisites not found:" -ForegroundColor Yellow
-    foreach ($missing in $missingOptional) {
-        Write-Host "  - $($missing.Name): $($missing.InstallMsg)" -ForegroundColor White
-    }
-    Write-Host "These will limit available functionality but setup can continue." -ForegroundColor White
+if ($missingTools.Count -gt 0 -and -not $Force) {
+    Write-Host "`nMissing required tools: $($missingTools -join ', ')" -ForegroundColor Red
+    Write-Host "This suggests the DevContainer setup didn't complete properly." -ForegroundColor Red
+    Write-Host "Try rebuilding the container or use -Force to continue anyway." -ForegroundColor Yellow
+    exit 1
 }
 
 # Initialize configuration

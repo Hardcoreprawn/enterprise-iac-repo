@@ -22,9 +22,9 @@ sudo apt-get install -y \
     htop \
     vim
 
-# Install Azure PowerShell modules
-echo "🔧 Installing Azure PowerShell modules..."
-pwsh -c "Set-PSRepository PSGallery -InstallationPolicy Trusted; Install-Module -Name Az -Scope CurrentUser -Force"
+# Set up PowerShell repository for on-demand module installation
+echo "🔧 Configuring PowerShell repository..."
+pwsh -c "Set-PSRepository PSGallery -InstallationPolicy Trusted"
 
 # Set up git configuration (if not already set)
 echo "🔧 Configuring git..."
@@ -110,11 +110,11 @@ else
     echo "❌ Make: Not found"
 fi
 
-# Check Azure PowerShell
-if pwsh -c "Get-Module -ListAvailable Az.Accounts" &> /dev/null; then
-    echo "✅ Azure PowerShell: Available"
+# Check Azure PowerShell repository
+if pwsh -c "Get-PSRepository PSGallery | Where-Object InstallationPolicy -eq 'Trusted'" &> /dev/null; then
+    echo "✅ Azure PowerShell: Repository configured (modules install on-demand)"
 else
-    echo "❌ Azure PowerShell: Not found"
+    echo "❌ Azure PowerShell: Repository not configured"
 fi
 
 echo ""
