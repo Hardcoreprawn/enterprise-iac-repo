@@ -79,10 +79,12 @@ enterprise-iac-repo/
 │   └── quick-start.md          # New team member onboarding
 ├── hooks/                      # Git hooks for local validation
 ├── scripts/                    # Automation scripts
+│   ├── bootstrap-azure.ps1     # Azure infrastructure bootstrap
 │   ├── install-azure-modules.ps1 # On-demand Azure PowerShell module installer
 │   ├── validate-local.ps1      # Local validation runner
 │   └── test-setup.ps1          # Setup validation test
 ├── health-check.sh             # DevContainer health verification
+├── bootstrap-config.json        # Bootstrap configuration template
 ├── local-validation-config.json # Local environment configuration
 ├── Makefile                    # Build and test automation
 ├── CONTRIBUTING.md             # Development workflow guide

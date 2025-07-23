@@ -1,7 +1,7 @@
 # Makefile for DevContainer infrastructure operations
 # Optimized for consistent Linux container environment
 
-.PHONY: help validate test test-setup plan apply destroy clean install-hooks install-az
+.PHONY: help validate test test-setup bootstrap plan apply destroy clean install-hooks install-az
 
 # Default target
 help:
@@ -9,13 +9,15 @@ help:
 	@echo "=============================================="
 	@echo ""
 	@echo "Local Development:"
-	@echo "  test-setup    - Test that toolkit setup is working correctly"
-	@echo "  validate      - Run all validation tests locally"
-	@echo "  validate-dry  - Run validation in dry-run mode (fast)"
-	@echo "  test          - Run connectivity and compliance tests"
-	@echo "  plan          - Generate Terraform plan"
-	@echo "  apply         - Apply Terraform configuration"
-	@echo "  destroy       - Destroy Terraform resources"
+	@echo "  test-setup     - Test that toolkit setup is working correctly"
+	@echo "  bootstrap      - Bootstrap Azure infrastructure for Terraform automation"
+	@echo "  validate       - Run all validation tests locally"
+	@echo "  validate-dry   - Run validation in dry-run mode (fast)"
+	@echo "  validate-docs  - Validate markdown documentation formatting"
+	@echo "  test           - Run connectivity and compliance tests"
+	@echo "  plan           - Generate Terraform plan"
+	@echo "  apply          - Apply Terraform configuration"
+	@echo "  destroy        - Destroy Terraform resources"
 	@echo ""
 	@echo "Setup:"
 	@echo "  install-hooks - Install git pre-commit hooks"
@@ -32,6 +34,18 @@ validate:
 
 validate-dry:
 	@pwsh -ExecutionPolicy Bypass -File "./scripts/validate-local.ps1" -DryRun
+
+# Documentation validation
+validate-docs:
+	@echo "Validating markdown documentation formatting..."
+	@markdownlint docs/ --config .markdownlint.json
+
+# Bootstrap Azure infrastructure
+bootstrap:
+	@pwsh -ExecutionPolicy Bypass -File "./scripts/bootstrap-azure.ps1"
+
+bootstrap-whatif:
+	@pwsh -ExecutionPolicy Bypass -File "./scripts/bootstrap-azure.ps1" -WhatIf
 
 # Test commands
 test: test-connectivity test-security test-monitoring

@@ -22,6 +22,10 @@ sudo apt-get install -y \
     htop \
     nano
 
+# Install Node.js-based tools
+echo "📝 Installing markdownlint-cli..."
+sudo npm install -g markdownlint-cli
+
 # Set up PowerShell repository for on-demand module installation
 echo "🔧 Configuring PowerShell repository..."
 pwsh -c 'Set-PSRepository PSGallery -InstallationPolicy Trusted'

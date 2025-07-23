@@ -1,3 +1,11 @@
 {
-    "makefile.configureOnOpen": false
+    "makefile.configureOnOpen": false,
+    "terraform.validation.enableEnhancedValidation": false,
+    "terraform.languageServer.enable": true,
+    "terraform.experimentalFeatures.validateOnSave": false,
+    "powershell.powerShellDefaultVersion": "PowerShell",
+    "powershell.promptToUpdatePowerShell": false,
+    "files.associations": {
+        "*.tfvars": "terraform"
+    }
 }

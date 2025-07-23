@@ -17,6 +17,18 @@ This is an enterprise infrastructure automation project using:
 - **Strict markdown formatting** - all linters must pass
 - **Enterprise naming conventions** for all resources
 
+### Markdown Formatting Requirements
+
+**MANDATORY**: All markdown must pass linting without errors. Common violations to avoid:
+
+- **MD022**: Always add blank lines before and after headings
+- **MD036**: Never use `**Bold text**` as headings - use proper `### Heading` levels
+- **MD040**: All code blocks must specify language: ````bash`, ````json`, ````hcl`
+- **MD031**: Code blocks need blank lines before and after
+- **MD024**: No duplicate headings in the same document
+
+**Validation workflow**: Always run `get_errors` tool after markdown edits and fix all formatting issues before completing tasks. Use `make validate-docs` for local validation.
+
 ## Project Structure
 
 - `terraform/` - Infrastructure as Code with modules and environments

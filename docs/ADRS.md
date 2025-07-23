@@ -28,6 +28,68 @@ Compact architectural decisions for the Enterprise Infrastructure as Code Toolki
 
 **Status**: Active
 
+## ADR-002: Azure DevOps Module Architecture (July 22, 2025)
+
+**Decision**: Modular approach with bootstrap sequence for Azure DevOps automation
+
+**Structure**:
+
+```text
+terraform/modules/
+├── entra-groups/            # Entra ID security groups and service principals
+├── azure-bootstrap/         # Initial Azure setup for Terraform automation  
+└── azure-devops-project/    # DevOps project with enterprise standards
+```
+
+**Naming**: `{prefix}-{purpose}-{environment}` (configurable prefix for portability)
+
+**Service Principals**: Least privilege with different SPs for different automation levels
+
+**Why**:
+
+- Handles Terraform bootstrap chicken-and-egg problem
+- Modular for maintenance without sprawl
+- Portable across organizations
+- Aligns with enterprise security standards
+
+**Trade-offs**:
+
+- Initial setup requires manual bootstrap steps
+- Multiple modules to coordinate
+- Requires understanding of deployment sequence
+
+**Status**: Active
+
+## ADR-003: Information Architecture for Agent Continuity (July 22, 2025)
+
+**Decision**: Structure documentation for AI agent handoffs and user continuity
+
+**Structure**:
+
+```text
+docs/
+├── ADRS.md                    # Architectural decisions (this file)
+├── bootstrap-guide.md         # Step-by-step bootstrap procedures
+├── module-development.md      # How to create new modules
+├── troubleshooting.md         # Common issues and solutions
+├── project-overview.md        # Complete project understanding
+└── standards/                 # Enterprise standards and principles
+```
+
+**Why**:
+
+- AI agents need structured context to pick up work
+- Decision traceability prevents repeated discussions
+- Operational focus on getting things working
+- Knowledge organized by concern area
+
+**Trade-offs**:
+
+- More documentation to maintain
+- Need discipline to keep current
+
+**Status**: Active
+
 ## ADR-002: On-Demand Azure Module Installation (July 22, 2025)
 
 **Decision**: Install Azure PowerShell modules on-demand rather than during container build

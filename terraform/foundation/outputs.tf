@@ -43,3 +43,24 @@ output "log_analytics_workspace_key" {
   value       = azurerm_log_analytics_workspace.main.primary_shared_key
   sensitive   = true
 }
+
+# Bootstrap Module Outputs
+output "terraform_state_storage_account" {
+  description = "Name of the Terraform state storage account"
+  value       = module.azure_bootstrap.storage_account_name
+}
+
+output "terraform_state_container" {
+  description = "Name of the Terraform state container"
+  value       = module.azure_bootstrap.storage_container_name
+}
+
+output "terraform_backend_config" {
+  description = "Complete backend configuration for Terraform remote state"
+  value       = module.azure_bootstrap.backend_config
+}
+
+output "terraform_backend_template" {
+  description = "Template for Terraform backend configuration block"
+  value       = module.azure_bootstrap.backend_config_template
+}

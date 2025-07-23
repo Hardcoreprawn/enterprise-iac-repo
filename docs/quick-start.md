@@ -34,14 +34,40 @@ If you can't use DevContainers, you'll need to manually install:
 - Git
 - Make
 
-Then run `./setup.ps1` to configure the environment.
+Then run `make test-setup` to verify the environment is ready.
 
 ## ⚡ Daily Workflow
 
 ### First Time Configuration
 
 ```bash
-# Configure for your environment
+# 1. Configure bootstrap settings
+# Edit bootstrap-config.json with your organization details:
+{
+  "organization": {
+    "prefix": "yourorg",        # 2-10 lowercase alphanumeric
+    "location": "eastus",
+    "environment": "dev"
+  },
+  "azure": {
+    "subscription_id": "your-subscription-id",
+    "tenant_id": "your-tenant-id"
+  },
+  "devops": {
+    "organization_url": "https://dev.azure.com/yourorg",
+    "project_name": "Enterprise Infrastructure"
+  }
+}
+
+# 2. Sign in to Azure
+az login
+az account set --subscription "your-subscription-id"
+
+# 3. Bootstrap Azure infrastructure (one-time setup)
+make bootstrap-whatif        # Preview what will be created
+make bootstrap              # Create the infrastructure
+
+# 4. Configure local validation
 # Edit local-validation-config.json:
 {
   "resourceGroup": "rg-your-test-environment",
@@ -51,11 +77,7 @@ Then run `./setup.ps1` to configure the environment.
   "runMonitoringTests": false
 }
 
-# Sign in to Azure
-az login
-az account set --subscription "your-subscription-id"
-
-# Install Azure PowerShell modules (on-demand, only when needed)
+# 5. Install Azure PowerShell modules (on-demand, only when needed)
 make install-az
 ```
 

@@ -6,6 +6,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 3.0"
     }
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = "~> 2.47"
+    }
     azuredevops = {
       source  = "microsoft/azuredevops"
       version = "~> 0.10"
@@ -18,18 +22,57 @@ provider "azurerm" {
   subscription_id = var.subscription_id
 }
 
+provider "azuread" {
+  tenant_id = var.tenant_id
+}
+
 provider "azuredevops" {
   org_service_url = var.azdo_org_service_url
 }
 
+# Create Entra ID groups and service principals
+module "entra_groups" {
+  source = "../modules/entra-groups"
+  
+  organization_prefix = var.organization_prefix
+  environment        = var.environment
+  security_contact   = "security@${var.organization_prefix}.com"
+  
+  default_tags = {
+    Organization = var.organization_prefix
+    Environment  = var.environment
+    Purpose      = "CloudStandardsAutomation"
+    ManagedBy    = "Terraform"
+  }
+}
+
+# Create secure Terraform state storage
+module "azure_bootstrap" {
+  source = "../modules/azure-bootstrap"
+  
+  organization_prefix        = var.organization_prefix
+  environment               = var.environment
+  location                  = var.location
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.main.id
+  
+  service_principal_object_ids = module.entra_groups.service_principal_object_ids
+  
+  common_tags = {
+    Organization = var.organization_prefix
+    Environment  = var.environment
+    ManagedBy    = "Terraform"
+    Purpose      = "CloudStandardsAutomation"
+  }
+}
+
 # Resource Group for the project
 resource "azurerm_resource_group" "main" {
-  name     = var.resource_group_name
+  name     = "${var.organization_prefix}-${var.environment}-automation"
   location = var.location
 
   tags = {
     Environment = var.environment
-    Project     = var.project_name
+    Organization = var.organization_prefix
     Purpose     = "CloudStandardsAutomation"
     ManagedBy   = "Terraform"
   }

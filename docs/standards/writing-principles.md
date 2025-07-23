@@ -4,7 +4,8 @@ Guidelines for creating clear, actionable documentation
 
 ## Core Philosophy
 
-Write standards that define **what the job done is**, not how well it is done. If we've not met the standard, we've not done it.
+Write standards that define **what the job done is**, not how well it is done. If we've not met the standard, we've
+not done it.
 
 ## Principles
 

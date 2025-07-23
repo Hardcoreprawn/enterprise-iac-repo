@@ -111,8 +111,10 @@ Write-Host "-------------------" -ForegroundColor Cyan
 Test-FileExists "Terraform Foundation" "terraform/foundation/main.tf"
 Test-FileExists "Validation Script" "scripts/validate-local.ps1"
 Test-FileExists "Local Config Template" "local-validation-config.json"
+Test-FileExists "Bootstrap Config" "bootstrap-config.json"
 Test-FileExists "Makefile" "Makefile"
 Test-FileExists "Azure Module Installer" "scripts/install-azure-modules.ps1"
+Test-FileExists "Bootstrap Script" "scripts/bootstrap-azure.ps1"
 
 Write-Host ""
 

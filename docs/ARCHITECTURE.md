@@ -267,4 +267,5 @@ High-level architecture and design decisions for the Enterprise Infrastructure a
 
 ---
 
-This architecture provides a foundation for enterprise-grade infrastructure automation while maintaining flexibility for organizational adaptation.
+This architecture provides a foundation for enterprise-grade infrastructure automation while maintaining flexibility
+for organizational adaptation.

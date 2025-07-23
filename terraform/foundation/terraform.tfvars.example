@@ -1,0 +1,18 @@
+# Example Terraform variables for foundation deployment
+# Copy this file to terraform.tfvars and update with your values
+
+# Azure Configuration
+subscription_id = "12345678-1234-1234-1234-123456789012"
+tenant_id      = "87654321-4321-4321-4321-210987654321"
+
+# Organization Configuration
+organization_prefix = "contoso"  # 2-10 lowercase alphanumeric characters
+environment        = "dev"       # dev, test, or prod
+location           = "East US"
+
+# Azure DevOps Configuration
+azdo_org_service_url = "https://dev.azure.com/contoso"
+azdo_project_name   = "Enterprise Infrastructure"
+
+# Override defaults if needed
+# resource_group_name = "custom-rg-name"

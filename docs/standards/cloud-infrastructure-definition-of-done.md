@@ -5,7 +5,9 @@ Version 1.0 - July 22, 2025
 
 ## Overview
 
-This document establishes the minimum security and operational requirements for cloud resources across Azure and AWS platforms. All cloud deployments must meet these standards before being considered "done" and ready for production use. These standards ensure consistent, secure, and well-operated cloud infrastructure across all engineering teams.
+This document establishes the minimum security and operational requirements for cloud resources across Azure and AWS
+platforms. All cloud deployments must meet these standards before being considered "done" and ready for production
+use. These standards ensure consistent, secure, and well-operated cloud infrastructure across all engineering teams.
 
 ## 1. Security
 
