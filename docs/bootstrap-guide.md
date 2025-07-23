@@ -195,9 +195,64 @@ terraform output azure_devops_service_principals
 After successful bootstrap:
 
 1. Review outputs and validate all resources created correctly
-2. Test pipeline deployment using created service connections
-3. Begin deploying enterprise modules (landing zones, IPAM, etc.)
-4. Document any organization-specific customizations needed
+2. Migrate Terraform state to remote backend (see State Migration section below)
+3. Test pipeline deployment using created service connections
+4. Begin deploying enterprise modules (landing zones, IPAM, etc.)
+5. Document any organization-specific customizations needed
+
+## State Migration to Remote Backend
+
+Once bootstrap infrastructure is deployed, migrate from local to remote state:
+
+### 1. Deploy Bootstrap Infrastructure
+
+```bash
+cd terraform/foundation
+terraform apply
+```
+
+### 2. Get Backend Configuration
+
+```bash
+terraform output terraform_backend_template
+```
+
+### 3. Add Backend Configuration
+
+Add the output to your main Terraform configuration:
+
+```hcl
+terraform {
+  backend "azurerm" {
+    storage_account_name = "stjablabterraformstate12345"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+    use_azuread_auth     = true
+  }
+}
+```
+
+### 4. Initialize Remote State
+
+```bash
+# Authenticate with Azure
+az login
+
+# Initialize with new backend
+terraform init -migrate-state
+
+# Confirm migration when prompted
+```
+
+### 5. Verify Migration
+
+```bash
+# Plan should show no changes
+terraform plan
+
+# Validate state is stored remotely
+az storage blob list --container-name tfstate --account-name <storage-account>
+```
 
 ## Reference
 

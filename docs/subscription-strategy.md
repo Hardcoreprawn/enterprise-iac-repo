@@ -1,190 +1,80 @@
-# Enterprise Azure Subscription Strategy
+# Azure Subscription Management
 
-## Phase 1: Manual Management Subscription Bootstrap
+Current status and guidance for Azure subscription management in this enterprise environment.
 
-### Initial Setup (Manual)
+## Current Setup
 
-1. **Create first subscription manually** in Azure portal
-   - Use naming: `{org}-mgmt-{environment}` (e.g., "contoso-mgmt-prod")
-   - Purpose: Houses platform automation infrastructure
-   - NOT for application workloads
+### Management Subscription Bootstrap
 
-2. **Bootstrap platform automation** in management subscription:
-   - Terraform state storage
-   - Service principals for subscription vending
-   - Key Vault for automation secrets
-   - Log Analytics for centralized monitoring
+**Status**: Foundation infrastructure ready for deployment
 
-### Resources Created in Management Subscription
+The project includes a complete bootstrap solution for setting up the management subscription that
+will house platform automation infrastructure.
 
-```text
-Management Subscription (contoso-mgmt-prod)
-├── Resource Groups
-│   ├── rg-contoso-terraform-state
-│   ├── rg-contoso-automation-platform
-│   └── rg-contoso-monitoring-hub
-├── Storage Account (terraform state)
-├── Key Vault (automation secrets)
-├── Service Principals
-│   ├── subscription-vending-sp (Owner at EA/MCA level)
-│   ├── landing-zone-deploy-sp (Contributor)
-│   └── monitoring-automation-sp (Reader + specific roles)
-└── Log Analytics Workspace (centralized logging)
-```
+**Key Components**:
 
-## Phase 2: Automated Subscription Vending
+- Terraform state storage with versioning and access controls
+- Service principals with least privilege access
+- Centralized monitoring and logging configuration
+- Azure DevOps integration for automated workflows
 
-### Subscription Vending Pipeline Architecture
+**Next Step**: Deploy using the [Bootstrap Guide](bootstrap-guide.md)
 
-Once bootstrap is complete, create automated subscription vending:
+### Architecture
 
-```text
-Azure DevOps Project: Enterprise Infrastructure
-├── Pipeline: subscription-vending.yml
-├── Pipeline: landing-zone-deployment.yml
-└── Pipeline: monitoring-setup.yml
+This implementation follows the management subscription pattern where platform automation
+infrastructure is separated from application workloads.
 
-Subscription Request Flow:
-1. Team submits subscription request (JSON/YAML)
-2. Approval workflow (Azure DevOps + Teams)
-3. Automated subscription creation via Azure CLI/REST API
-4. Landing zone deployment via Terraform
-5. Monitoring and compliance setup
-6. Handoff to team with documentation
-```
+**Management Subscription Contains**:
 
-### Subscription Vending Service Principal Scope
+- Terraform state storage
+- Service principals for automation
+- Centralized monitoring workspace
+- Key Vault for automation secrets
 
-The subscription-vending service principal needs:
+**Workload Subscriptions**: Separate subscriptions for applications (to be created later)
 
-- **Enrollment Account Owner** (for EA customers)
-- **MCA Invoice Section Contributor** (for MCA customers)
-- **Owner** at Management Group level for RBAC assignments
+## Getting Started
 
-## Phase 3: Enterprise Landing Zones
+### For New Teams
 
-### Subscription Types to Automate
+1. **Environment Setup**: Follow the [Quick Start Guide](quick-start.md) to set up your development environment
+2. **Deploy Foundation**: Use the [Bootstrap Guide](bootstrap-guide.md) to deploy the management subscription infrastructure
+3. **Review Standards**: Understand requirements in [Azure Subscription Standards](standards/azure-subscription-standards.md)
 
-1. **Sandbox** - Developer experimentation (auto-cleanup)
-2. **Dev/Test** - Application development environments
-3. **Production** - Live application hosting
-4. **Shared Services** - Cross-team shared resources
+### For Platform Teams
 
-### Landing Zone Templates
-
-Each subscription type gets:
-
-- Standardized network topology
-- Security baseline (Azure Policy assignments)
-- Monitoring configuration
-- RBAC structure
-- Budgets and cost alerts
-
-## Implementation Priority
-
-### Week 1-2: Foundation Bootstrap
-
-- [ ] Manual management subscription creation
-- [ ] Terraform state storage setup
-- [ ] Service principal creation with proper scopes
-- [ ] Initial platform automation deployment
-
-### Week 3-4: Subscription Vending MVP
-
-- [ ] Azure DevOps pipeline for subscription creation
-- [ ] Basic landing zone template
-- [ ] Approval workflow integration
-- [ ] Documentation and runbooks
-
-### Month 2: Enterprise Landing Zones
-
-- [ ] Multiple subscription type templates
-- [ ] Policy-driven governance
-- [ ] Cost management automation
-- [ ] Self-service portal (optional)
-
-## Security Considerations
-
-### Subscription Vending Permissions
-
-- Limit subscription creation to dedicated service principal
-- Require approval workflow for all new subscriptions
-- Audit trail for all subscription operations
-- Regular access reviews for platform automation accounts
-
-### Blast Radius Management
-
-- Management subscription isolated from workload subscriptions
-- Platform automation uses least privilege principles
-- Cross-subscription access explicitly defined and audited
-
-## State Migration Process
-
-Once the bootstrap infrastructure is deployed:
-
-### 1. Deploy Bootstrap Infrastructure
+**Deploy the foundation infrastructure**:
 
 ```bash
-cd terraform/foundation
-terraform apply
+# Configure your organization settings
+edit bootstrap-config.json
+
+# Deploy foundation infrastructure
+make bootstrap
 ```
 
-### 2. Get Backend Configuration
+**Migrate to remote state** (after bootstrap):
 
 ```bash
+# Get backend configuration from Terraform output
 terraform output terraform_backend_template
+
+# Follow state migration steps in bootstrap guide
 ```
 
-### 3. Add Backend Configuration
+## Future Capabilities
 
-Add the output to your main Terraform configuration:
+**Planned additions** (not yet implemented):
 
-```hcl
-terraform {
-  backend "azurerm" {
-    storage_account_name = "stjablabterraformstate12345"
-    container_name       = "tfstate"
-    key                  = "terraform.tfstate"
-    use_azuread_auth     = true
-  }
-}
-```
+- Automated subscription vending pipeline
+- Landing zone templates for different subscription types
+- Self-service subscription request workflow
 
-### 4. Initialize Remote State
+These capabilities will be added once the foundation infrastructure is deployed and tested.
 
-```bash
-# Authenticate with Azure
-az login
+## Documentation
 
-# Initialize with new backend
-terraform init -migrate-state
-
-# Confirm migration when prompted
-```
-
-### 5. Verify Migration
-
-```bash
-# Plan should show no changes
-terraform plan
-
-# Validate state is stored remotely
-az storage blob list --container-name tfstate --account-name <storage-account>
-```
-
-## Current Status
-
-### Phase 1: Foundation Bootstrap ✅ Ready
-
-- [x] Azure bootstrap module created with enterprise security
-- [x] Service principal automation configured
-- [x] Secure state storage with RBAC and auditing
-- [x] Diagnostic logging and monitoring
-- [ ] **NEXT**: Deploy foundation infrastructure
-
-### Future Phases
-
-- [ ] Build azure-devops-project module
-- [ ] Create subscription vending automation
-- [ ] Implement landing zone templates
-- [ ] Set up governance and compliance automation
+**Detailed Standards**: [Azure Subscription Standards](standards/azure-subscription-standards.md)
+**Installation Steps**: [Bootstrap Guide](bootstrap-guide.md)  
+**Development Setup**: [Quick Start Guide](quick-start.md)

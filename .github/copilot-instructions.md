@@ -19,6 +19,7 @@ Before working on any task, read the relevant documentation:
 
 **Standards and Requirements**:
 - Enterprise infrastructure standards: `docs/standards/cloud-infrastructure-definition-of-done.md`
+- Azure subscription standards: `docs/standards/azure-subscription-standards.md`
 - Writing and documentation principles: `docs/standards/writing-principles.md`
 - Architectural decisions: `docs/ADRS.md`
 
