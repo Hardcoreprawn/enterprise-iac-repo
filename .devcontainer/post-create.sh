@@ -42,13 +42,9 @@ fi
 echo "🔧 Setting up PowerShell scripts..."
 find /workspaces/enterprise-iac-repo -name "*.ps1" -type f -exec chmod +x {} \;
 
-# Run the toolkit setup
-echo "🔧 Running toolkit setup..."
-cd /workspaces/enterprise-iac-repo
-pwsh -ExecutionPolicy Bypass -File "./setup.ps1" -Minimal -Force
-
 # Install git hooks
 echo "🪝 Installing git hooks..."
+cd /workspaces/enterprise-iac-repo
 if [ -d ".git" ]; then
     make install-hooks || echo "⚠️  Git hooks installation skipped (will work after first commit)"
 fi
@@ -65,7 +61,7 @@ echo ""
 echo "🎯 Quick Start Commands:"
 echo "  make help           - Show all available commands"
 echo "  make validate-dry   - Quick validation test"
-echo "  ./setup.ps1         - Re-run setup if needed"
+echo "  make install-az     - Install Azure PowerShell modules"
 echo ""
 echo "🔐 Azure Authentication:"
 echo "  az login            - Sign in to Azure"

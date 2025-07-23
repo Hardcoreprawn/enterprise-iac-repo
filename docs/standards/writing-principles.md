@@ -47,6 +47,13 @@ not done it.
 - Call things what they actually are
 - Be accurate, not promotional
 
+### 6. Clean Formatting
+
+- No emojis in markdown files
+- Use proper markdown headings instead of bold text
+- Ensure all code blocks specify language
+- Follow strict markdown linting standards
+
 ## Application
 
 When writing or reviewing standards:

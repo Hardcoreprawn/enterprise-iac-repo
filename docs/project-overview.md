@@ -80,7 +80,7 @@ enterprise-iac-repo/
 ├── hooks/                      # Git hooks for local validation
 ├── scripts/                    # Automation scripts
 │   ├── bootstrap-azure.ps1     # Azure infrastructure bootstrap
-│   ├── install-azure-modules.ps1 # On-demand Azure PowerShell module installer
+│   ├── install-azure-modules.ps1 # Azure PowerShell module installer
 │   ├── validate-local.ps1      # Local validation runner
 │   └── test-setup.ps1          # Setup validation test
 ├── health-check.sh             # DevContainer health verification

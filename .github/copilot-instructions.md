@@ -1,47 +1,69 @@
 <!-- Use this file to provide workspace-specific custom instructions to Copilot. For more details, visit https://code.visualstudio.com/docs/copilot/copilot-customization#_use-a-githubcopilotinstructionsmd-file -->
 
-# Enterprise Infrastructure as Code Project
+# Enterprise Infrastructure as Code Project - AI Agent Navigation
 
-This is an enterprise infrastructure automation project using:
+This file directs AI agents to the relevant project documentation and standards.
 
-- **Terraform** for Infrastructure as Code
-- **Azure DevOps** for CI/CD pipelines
-- **Azure Policy** for compliance automation
-- **Mono-repo structure** for team collaboration
+## Project Context
+
+Enterprise infrastructure automation project using Terraform, Azure DevOps, Azure Policy, and mono-repo structure.
+
+## Essential Documentation Links
+
+Before working on any task, read the relevant documentation:
+
+**Project Understanding**:
+- Project scope and goals: `docs/project-overview.md`
+- Technology stack and architecture: `docs/ARCHITECTURE.md`
+- Development workflow: `docs/standards/contribution-guide.md`
+
+**Standards and Requirements**:
+- Enterprise infrastructure standards: `docs/standards/cloud-infrastructure-definition-of-done.md`
+- Writing and documentation principles: `docs/standards/writing-principles.md`
+- Architectural decisions: `docs/ADRS.md`
+
+**Getting Started**:
+- New team member setup: `docs/quick-start.md`
+- Bootstrap process: `docs/bootstrap-guide.md`
+- Module development: `docs/module-development.md`
 
 ## Coding Standards
 
-- **Direct, not performative language** in all documentation
-- **Binary completion** - either done or not done
-- **Job-focused** - describe what work needs completing
-- **Strict markdown formatting** - all linters must pass
-- **Enterprise naming conventions** for all resources
+**Documentation Style**:
+- Follow principles in `docs/standards/writing-principles.md`
+- Direct, job-focused language (not performative or aspirational)
+- Binary completion criteria (done or not done)
+- No emojis in markdown files
+- Strict markdown formatting - all linters must pass
 
-### Markdown Formatting Requirements
-
-**MANDATORY**: All markdown must pass linting without errors. Common violations to avoid:
-
-- **MD022**: Always add blank lines before and after headings
-- **MD036**: Never use `**Bold text**` as headings - use proper `### Heading` levels
-- **MD040**: All code blocks must specify language: ````bash`, ````json`, ````hcl`
-- **MD031**: Code blocks need blank lines before and after
-- **MD024**: No duplicate headings in the same document
-
-**Validation workflow**: Always run `get_errors` tool after markdown edits and fix all formatting issues before completing tasks. Use `make validate-docs` for local validation.
+**Validation Requirements**:
+- Always run `get_errors` tool after markdown edits
+- Fix all formatting issues before completing tasks
+- Use `make validate-docs` for local validation
 
 ## Project Structure
 
-- `terraform/` - Infrastructure as Code with modules and environments
+Navigate to appropriate directories based on task:
+- `terraform/` - Infrastructure as Code modules and foundation
 - `policies/` - Azure Policy definitions organized by domain
-- `pipelines/` - Azure DevOps pipeline templates
-- `docs/` - Standards, architecture docs, and runbooks
+- `scripts/` - PowerShell automation scripts
+- `tests/` - Compliance and connectivity validation
+- `docs/` - All detailed documentation and standards
 
-## Key Principles
+## Architecture Decisions (ADRs)
 
-When generating code or documentation:
+Read `docs/ADRS.md` for complete architectural decisions. Key enforcement rules:
 
-1. Focus on actual job completion, not aspirational quality
-2. Use concrete, testable requirements
-3. Apply enterprise security and governance standards
-4. Ensure all infrastructure meets defined compliance checkboxes
-5. Follow the established mono-repo structure
+**ADR-004: No Thin Wrapper Scripts** - Do NOT create root-level PowerShell wrapper scripts. Use Makefile targets for user interface and direct script access for power users. Prevents complexity and maintenance overhead.
+
+**Implementation**: 
+- User operations: `make install-az`, `make validate`, `make test-setup`
+- Power users: `./scripts/script-name.ps1` (direct access)
+- Never create: `./setup.ps1`, `./install-modules.ps1`, etc.
+
+**ADR-005: Documentation Consolidation** - Maintain single root README.md as entry point, with all detailed documentation in docs/ directory. Do NOT create duplicate documentation files at root level.
+
+**Implementation**:
+- Single entry point: Root `README.md` only
+- Detailed docs: All in `docs/` directory structure
+- Never create: Root-level `QUICK-START.md`, `PROJECT-OVERVIEW.md`, `CONTRIBUTING.md`, etc.

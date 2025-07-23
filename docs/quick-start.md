@@ -2,7 +2,7 @@
 
 Get productive with the Infrastructure Toolkit in 5 minutes
 
-## 🚀 New Team Member Setup
+## New Team Member Setup
 
 ### DevContainer Setup (Required)
 
@@ -36,7 +36,7 @@ If you can't use DevContainers, you'll need to manually install:
 
 Then run `make test-setup` to verify the environment is ready.
 
-## ⚡ Daily Workflow
+## Daily Workflow
 
 ### First Time Configuration
 
@@ -101,7 +101,7 @@ git commit -m "feat: add new security policy"
 git push
 ```
 
-## 🎯 Common Tasks
+## Common Tasks
 
 ### Run Specific Tests
 
@@ -125,7 +125,7 @@ make destroy            # Clean up resources
 make help              # Show all available commands
 ```
 
-## 📋 Enterprise Standards Checklist
+## Enterprise Standards Checklist
 
 Before any deployment, ensure you meet the [Cloud Infrastructure Definition of Done](docs/standards/cloud-infrastructure-definition-of-done.md):
 
@@ -157,7 +157,7 @@ Before any deployment, ensure you meet the [Cloud Infrastructure Definition of D
 - [ ] Cost management alerts
 - [ ] Documentation updated
 
-## 🚨 Troubleshooting
+## Troubleshooting
 
 ### DevContainer Issues
 
@@ -167,7 +167,7 @@ docker system prune -a
 
 # Tools not installed
 ./health-check.sh
-# Reinstall if needed: ./setup.ps1 -Force
+# Reinstall modules if needed: make install-az
 
 # Install Azure PowerShell modules on-demand
 make install-az
@@ -196,14 +196,14 @@ az role assignment list --assignee $(az account show --query user.name -o tsv)
 az group show --name "your-resource-group"
 ```
 
-## 📚 Key Documents
+## Key Documents
 
 - **[Enterprise Standards](docs/standards/cloud-infrastructure-definition-of-done.md)** - What "done" means
 - **[Writing Principles](docs/standards/writing-principles.md)** - How to write clear documentation
 - **[DevContainer Guide](.devcontainer/README.md)** - Detailed container setup
 - **[Testing Framework](tests/README.md)** - Infrastructure validation details
 
-## 🎓 Learning Path
+## Learning Path
 
 1. **Day 1**: Get environment working (this guide)
 2. **Day 2**: Review enterprise standards and principles

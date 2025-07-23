@@ -124,6 +124,57 @@ docs/
 
 **Status**: Active
 
+## ADR-004: Eliminate Thin Wrapper Scripts (July 23, 2025)
+
+**Decision**: Remove root-level PowerShell wrapper scripts in favor of Makefile-first architecture
+
+**Why**:
+
+- Reduces complexity - fewer files to maintain and understand
+- Eliminates confusion - one clear way to perform operations
+- Makefile already provides consistent interface for all operations
+- Power users can call scripts directly when needed
+
+**Implementation**:
+
+- **Remove**: `./setup.ps1`, `./install-azure-modules.ps1`, `./test-setup.ps1`
+- **Keep**: Makefile targets (`make install-az`, `make validate`, `make test-setup`)
+- **Keep**: Implementation scripts in `./scripts/` for direct access
+
+**Trade-offs**:
+
+- Slightly longer commands for power users who bypass Make
+- Requires Make knowledge for all operations
+- Less "discoverable" - users must know about Makefile
+
+**Status**: Active
+
+## ADR-005: Consolidate Documentation Architecture (July 23, 2025)
+
+**Problem**: Documentation sprawl creates confusion and maintenance overhead. We have duplicate
+content across root-level and docs/ directory files, plus scattered information that should be
+consolidated.
+
+**Current Issues**:
+
+- Root duplicates: README.md vs docs/project-overview.md
+- Quick start duplicates: QUICK-START.md vs docs/quick-start.md  
+- PROJECT-OVERVIEW.md duplicates content in docs/
+- CONTRIBUTING.md isolated from other docs/standards/ content
+- Difficult to find authoritative information source
+
+**Decision**: Consolidate to clean docs/ structure with single root README.md entry point.
+
+**Implementation**:
+
+- **Keep**: Single root `README.md` as project entry point
+- **Consolidate**: All detailed docs in `docs/` directory
+- **Remove**: Root-level `QUICK-START.md`, `PROJECT-OVERVIEW.md`, `CONTRIBUTING.md`
+- **Merge**: Content into appropriate `docs/` files
+- **Standards**: Development standards consolidated in `docs/standards/`
+
+**Status**: Active
+
 ---
 
 **Format**: Keep each ADR to 3-5 sentences. Focus on the essential decision and reasoning.
